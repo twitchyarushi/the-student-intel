@@ -27,7 +27,7 @@ export default function Home() {
       <PolkaDots />
 
       <section className="hero">
-        <div className="logo px-box px-2 no-shadow">rmp.</div>
+        <div className="logo px-box px-2 no-shadow">Word Of Warning.</div>
 
         <h1>
           Wondering what your professor is really like?

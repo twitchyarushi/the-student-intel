@@ -24,7 +24,7 @@ button { font: inherit; color: inherit; cursor: pointer; background: none; borde
 /* ================= PIXEL BOX =================
    Black stepped outline (::before) + coloured fill (::after) + hard pixel shadow.
    Use with .px-2 (small rounded pixel corners) or .px-3 (rounder).
-   Colour comes from --fill. */
+   Color comes from --fill. */
 .px-box {
   position: relative;
   isolation: isolate;
@@ -51,7 +51,7 @@ button { font: inherit; color: inherit; cursor: pointer; background: none; borde
   align-items: center;
   height: 100dvh;           /* exactly one screen, no scrolling */
   overflow: hidden;
-  padding: clamp(14px, 3vh, 40px) 20px clamp(12px, 2vh, 24px);
+  padding: clamp(24px, 3vh, 40px) 20px clamp(12px, 2vh, 24px);
   isolation: isolate;
 }
 /* very short windows: let it scroll instead of squashing everything */
@@ -76,13 +76,28 @@ button { font: inherit; color: inherit; cursor: pointer; background: none; borde
 
 /* ---------- hero ---------- */
 .hero {
+  --g: clamp(16px, 3.5vh, 40px);   /* the even gap between the 4 items */
+  flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: flex-start;
   text-align: center;
-  gap: clamp(10px, 2.4vh, 28px);
+  gap: var(--g);
   max-width: 1000px;
+  --lift: 40px;   /* how far the logo + heading move up */
 }
+/* invisible spacers that split the free space 4 : 1 (top : bottom) */
+.hero::before, .hero::after { content: ""; }
+.hero::before { flex: 4 1 0; margin-bottom: calc(var(--g) * -1); }
+.hero::after  { flex: 0 0 0; margin-top: calc(var(--g) * -1); }
+
+/* logo stays at the very top; the spacer now sits between the logo and the heading */
+.hero::before { order: 1; flex: 0 0 0; }
+.hero::after  { order: 2; }
+h1, .cta, .login-link { order: 1; }
+h1 { margin-block: auto; }  /* lifts the heading a little; button + login stay put */
+
 
 .logo {
   --fill: var(--maroon);
@@ -102,14 +117,20 @@ h1 {
 }
 
 .cta {
-  --fill: var(--maroon);
-  color: var(--cream);
+  --fill: var(--blue);
+  color: var(--maroon);
   font-weight: 700;
   font-size: clamp(0.9rem, min(2.4vw, 3vh), 1.75rem);
   padding: clamp(10px, 2vh, 18px) clamp(18px, 3vw, 34px);
   transition: transform 0.08s steps(2), filter 0.08s steps(2);
+  margin-top: clamp(8px, 3.5vh, 24px)+ var(--lift);   /* NEW: pushes button + login down */
 }
-.cta:hover  { transform: translate(2px, 2px); filter: drop-shadow(2px 2px 0 var(--stroke)); }
+.cta:hover {
+  --fill: var(--blue);   /* background becomes maroon */
+  color: var(--maroon);        /* text becomes pink */
+  transform: translate(2px, 2px);
+  filter: drop-shadow(2px 2px 0 var(--stroke));
+}
 .cta:active { transform: translate(var(--px), var(--px)); filter: drop-shadow(0 0 0 var(--stroke)); }
 
 .login-link {
@@ -128,8 +149,7 @@ h1 {
   justify-content: center;
   align-items: flex-end;
   gap: clamp(24px, 6vw, 90px);
-  margin-top: auto;
-  padding-top: clamp(40px, 6vh, 90px); /* room for the bubbles */
+  padding-top: clamp(92px, 11vh, 110px);/* room for the bubbles */
 }
 
 .char {
@@ -143,7 +163,7 @@ h1 {
 /* All three sprites are trimmed to their real edges, so one shared HEIGHT
    makes them the same size. Change --char-h to scale all of them together. */
 .sprite {
-  --char-h: clamp(90px, min(24vh, 32vw), 230px);
+ --char-h: clamp(90px, min(20vh, 30vw), 210px);
   display: block;
   height: var(--char-h);
   width: auto;
@@ -211,7 +231,7 @@ h1 {
 /* ---------- footer pill ---------- */
 .footer { margin-top: clamp(10px, 2vh, 28px); }
 .pill {
-  --fill: var(--blue);
+  --fill: var(--bg);
   display: inline-flex;
   align-items: center;
   gap: 10px;
@@ -234,6 +254,7 @@ h1 {
   place-items: center;
 }
 .sound:active { transform: translate(2px, 2px); filter: drop-shadow(2px 2px 0 var(--stroke)); }
+.sound-icon { width: 24px; height: 24px; display: block; }
 
 @media (prefers-reduced-motion: reduce) {
   .dot { transition: none; }
@@ -278,3 +299,4 @@ h1 {
 @media (prefers-reduced-motion: reduce) {
   .sound-hint { animation: none; }
 }
+

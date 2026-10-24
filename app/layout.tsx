@@ -16,7 +16,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "rmp. | Rate My Professor, by students",
+  title: "wow. | Rate My Professor, by students",
   description: "Wondering what your professor is really like?",
 };
 
